@@ -4,35 +4,95 @@
     {
         public $uses = array('Inscricao');
 
-        public function index() {
+        /**
+         * index method
+         *
+         * @return void
+         */
+            public function index() {
+                $this->Inscricao->recursive = 0;
+                $this->set('inscricaos', $this->paginate());
+            }
 
-        }
+        /**
+        * view method
+        *
+        * @throws NotFoundException
+        * @param string $id
+        * @return void
+        */
+            public function visualizar($id = null) {
+                $this->Inscricao->id = $id;
+                if (!$this->Inscricao->exists()) {
+                    throw new NotFoundException(__('Invalid inscricao'));
+                }
+                $this->set('inscricaos', $this->Inscricao->read(null, $id));
+            }
 
-        public function criar() // Carrega automaticamente a view:///View/Inscricoes/create.ctp}
-        {
-
-            $isPost = $this->request->isPost();// Se é um POST e recebemos dados do formulário
-            if ($isPost && !empty($this->request->data)) {// Tenta salvar os dados da inscrição
-                if ($this->Inscricao->save($this->request->data)) {// Registro inserido com sucesso!
-                    $this->redirect(['controller' => 'Inscricaos', 'action' => 'index']);
+        /**
+         * add method
+         *
+         * @return void
+         */
+            public function criar() {
+                if ($this->request->is('post')) {
+                    $this->Inscricao->create();
+                    if ($this->Inscricao->save($this->request->data)) {
+                        $this->Session->setFlash(__('The inscricao has been saved'));
+                        $this->redirect(array('action' => 'index'));
+                    } else {
+                        $this->Session->setFlash(__('The inscricao could not be saved. Please, try again.'));
+                    }
                 }
             }
-        }
 
-        public function visualizar() // Carrega automaticamente a view:///View/Inscricoes/read.ctp}
-        {
+        /**
+         * edit method
+         *
+         * @throws NotFoundException
+         * @param string $id
+         * @return void
+         */
+            public function editar($id = null) {
+                $this->Inscricao->id = $id;
+                if (!$this->Inscricao->exists()) {
+                    throw new NotFoundException(__('Invalid inscricao'));
+                }
+                if ($this->request->is('post') || $this->request->is('put')) {
+                    if ($this->Inscricao->save($this->request->data)) {
+                        $this->Session->setFlash(__('The inscricao has been saved'));
+                        $this->redirect(array('action' => 'index'));
+                    } else {
+                        $this->Session->setFlash(__('The inscricao could not be saved. Please, try again.'));
+                    }
+                } else {
+                    $this->request->data = $this->Inscricao->read(null, $id);
+                }
+            }
 
-        }
-
-        public function editar() // Carrega automaticamente a view:///View/Inscricoes/update.ctp}
-        {
-
-        }
-
-        public function deletar() // Carrega automaticamente a view:///View/Inscricoes/delete.ctp}
-        {
-
-        }
+        /**
+         * delete method
+         *
+         * @throws MethodNotAllowedException
+         * @throws NotFoundException
+         * @param string $id
+         * @return void
+         */
+            public function deletar($id = null) {
+                if (!$this->request->is('post')) {
+                    throw new MethodNotAllowedException();
+                }
+                $this->Inscricao->id = $id;
+                if (!$this->Inscricao->exists()) {
+                    throw new NotFoundException(__('Invalid Inscricao'));
+                }
+                if ($this->Inscricao->delete()) {
+                    $this->Session->setFlash(__('Inscricao deleted'));
+                    $this->redirect(array('action' => 'index'));
+                }
+                $this->Session->setFlash(__('Inscricao was not deleted'));
+                $this->redirect(array('action' => 'index'));
+            }
     }
 
 ?>

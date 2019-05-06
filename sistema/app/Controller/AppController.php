@@ -31,6 +31,33 @@ App::uses('Controller', 'Controller');
  * @package       app.Controller
  * @link http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
+
 class AppController extends Controller {
+
     public $helpers = array('GoogleMap');
+
+    public $components = array('Session', 'Auth');
+
+    public function beforeFilter() {
+        $this->Auth->authenticate = array(
+                'Form' => array(
+                    'userModel' => 'Usuario',
+                    'fields' => array(
+                        'username' => 'login',
+                        'password' => 'senha'
+                    )
+                )
+            );
+        $this->Auth->loginAction = array(
+            'controller' => 'usuarios',
+            'action' => 'login'
+        );
+
+        // if (in_array($this->request->params['controller'], ['palestras'])) {
+        //     $this->Auth->allow();
+        // }
+        // if (!$this->_isPrefix('painel')) {
+        // }
+    }
+
 }

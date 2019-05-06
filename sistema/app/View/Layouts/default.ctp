@@ -18,9 +18,32 @@
 
 $site_principal = __d('cake_dev', 'Sistema');
 ?>
+<?php echo $this->Html->script('jquery'); ?>
+<?php echo $this->Html->script('jquery.mask.min'); ?>
+<?php echo $this->Html->script('mask'); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
+<style>
+#menu ul {
+    padding:0px;
+    margin:0px;
+	font-size: 20px;
+    background-color: white;
+    list-style:none;
+}
+
+#menu li {
+	color: white;
+	display: inline;
+}
+
+#menu h3 {
+	background-color: white;
+}
+
+</style>
 
 <head>
 	<?php echo $this->Html->charset(); ?>
@@ -30,9 +53,7 @@ $site_principal = __d('cake_dev', 'Sistema');
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-
 		echo $this->Html->css('cake.generic');
-
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
@@ -40,30 +61,25 @@ $site_principal = __d('cake_dev', 'Sistema');
 </head>
 
 <body>
+	<div id="menu">
+		<ul>
+			<li><?php echo $this->Html->link('Login', '/usuarios/login', ['class' => 'button']);?></li>
+			<li><?php echo $this->Html->link('Logout', '/usuarios/logout', ['class' => 'button']);?></li>
+			<li><?php echo $this->Html->link('Sobre', '/pages/sobre', ['class' => 'button']);?></li>
+			<li><?php echo $this->Html->link('Como Chegar', '/pages/como-chegar', ['class' => 'button']);?></li>
+			<li><?php echo $this->Html->link('Painel', '/pages/painel', ['class' => 'button']);?></li>
+		</ul>
+	</div>
+	<div>
+	</div>
+
 	<div id="container">
-
-		<div id="header">
-			<ul>
-				<li><h1><?php echo $this->Html->link($site_principal, 'http://cakephp.org' );?></h1></li>
-				<li><h1><?php echo __d('cake_dev', ' PRINCIPAL '); ?></h1></li>
-				<li><h1><?php echo __d('cake_dev', ' SOBRE '); ?></h1></li>
-				<li><h1><?php echo __d('cake_dev', ' COMO CHEGAR '); ?></h1></li>
-			</ul>
-		</div>
-
-		<?php echo $this->element('menu', array(
-			'pagina_atual' => 'MENU',
-		)) ?>
 
 		<div id="content">
 
 			<?php echo $this->Session->flash(); ?>
 
 			<?php echo $this->fetch('content'); ?>
-		</div>
-
-		<div id="footer">
-			<?php echo __d('cake_dev', 'FOOTER'); ?>
 		</div>
 
 	</div>
